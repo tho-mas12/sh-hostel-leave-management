@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import func
 from collections import defaultdict
+import os
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -316,4 +318,5 @@ if __name__ == "__main__":
 
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
+
 
