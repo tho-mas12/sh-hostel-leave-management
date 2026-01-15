@@ -298,11 +298,22 @@ def logout():
     session.clear()
     return redirect(url_for('home'))
 
-import os
-
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
+       
+        admin = User.query.filter_by(role='admin').first()
+        if not admin:
+            admin = User(
+                username='admin',
+                password='admin123',
+                role='admin'
+            )
+            db.session.add(admin)
+            db.session.commit()
+            print("Admin user created: admin / admin123")
+
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
+
