@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Database Viewer - Hostel Leave Application</title>
+</head>
+<body>
+    <div class="page-header">
+        <div class="header-content">
+            <h1>Database Viewer</h1>
+            <p class="header-subtitle">View All Database Records</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h2>📊 Database Management</h2>
+            <div class="nav-buttons">
+                <a href="/admin_dashboard" class="btn">Back to Dashboard</a>
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <!-- Summary Cards -->
+            <div class="stats-summary">
+                <div class="stat-card">
+                    <h3>Total Users</h3>
+                    <p class="stat-number">{{ total_users }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Leave Records</h3>
+                    <p class="stat-number">{{ total_leaves }}</p>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="database-section">
+                <h3>👥 Users Table</h3>
+                <p class="table-info">Total Records: {{ total_users }}</p>
+                <div class="table-wrapper">
+                    <table class="leave-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if users %}
+                                {% for user in users %}
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td><strong>{{ user.username }}</strong></td>
+                                    <td>
+                                        <span class="password-field">
+                                            <input type="password" value="{{ user.password }}" readonly>
+                                            <button type="button" class="btn-show-pwd" onclick="togglePassword(this)">👁️</button>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if user.role == 'admin' %}
+                                            <span class="role-badge admin">👨‍💼 Admin</span>
+                                        {% else %}
+                                            <span class="role-badge student">👤 Student</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="empty-message">No users found</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Leave Applications Table -->
+            <div class="database-section">
+                <h3>📋 Leave Applications Table</h3>
+                <p class="table-info">Total Records: {{ total_leaves }}</p>
+                <div class="table-wrapper">
+                    <table class="leave-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student ID</th>
+                                <th>Student Username</th>
+                                <th>Leave Reason</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if leaves %}
+                                {% for leave in leaves %}
+                                <tr>
+                                    <td>{{ leave.id }}</td>
+                                    <td>{{ leave.student_id }}</td>
+                                    <td><strong>{{ leave.student_username }}</strong></td>
+                                    <td>{{ leave.leave_reason[:50] }}{% if leave.leave_reason|length > 50 %}...{% endif %}</td>
+                                    <td>{{ leave.leave_start }}</td>
+                                    <td>{{ leave.leave_end }}</td>
+                                    <td>
+                                        <span class="status {{ leave.status|lower }}">{{ leave.status }}</span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="7" class="empty-message">No leave applications found</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Database Info -->
+            <div class="info-section">
+                <h3>ℹ️ Database Information</h3>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4>Database Type</h4>
+                        <p>SQLite3</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Location</h4>
+                        <p>instance/leave_management.db</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Tables</h4>
+                        <p>2 (User, LeaveApplication)</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Total Records</h4>
+                        <p>{{ total_users + total_leaves }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(btn) {
+            const input = btn.previousElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁️';
+            }
+        }
+    </script>
+</body>
+</html>

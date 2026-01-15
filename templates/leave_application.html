@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Leave Application</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Leave Application Form</h2>
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <form action="/leave_application" method="POST" id="leaveForm">
+            <textarea name="leave_reason" placeholder="Reason for Leave" required></textarea>
+            <label for="leave_start">Start Date:</label>
+            <input type="date" name="leave_start" id="leave_start" required>
+            <label for="leave_end">End Date:</label>
+            <input type="date" name="leave_end" id="leave_end" required>
+            <div class="form-buttons">
+                <button type="submit">Submit</button>
+                <button type="reset" class="btn-reset-red">Reset</button>
+            </div>
+            <a href="/student_dashboard" class="btn-cancel">Back</a>
+        </form>
+    </div>
+
+    <script>
+        // Set default start date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('leave_start').value = today;
+            document.getElementById('leave_start').min = today;
+            document.getElementById('leave_end').min = today;
+        });
+    </script>
+</body>
+</html>

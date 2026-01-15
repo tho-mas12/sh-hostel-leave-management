@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Student Dashboard</h2>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+        
+        <div class="dashboard-content">
+            <h3>Welcome, {{ session.username }}</h3>
+            
+            <div class="action-buttons">
+                <a href="/leave_application" class="btn">Apply for Leave</a>
+            </div>
+            
+            <h3>Your Leave Applications</h3>
+            <table class="leave-table">
+                <thead>
+                    <tr>
+                        <th>Leave Reason</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if leaves %}
+                        {% for leave in leaves %}
+                        <tr>
+                            <td>{{ leave.leave_reason }}</td>
+                            <td>{{ leave.leave_start }}</td>
+                            <td>{{ leave.leave_end }}</td>
+                            <td><span class="status {{ leave.status|lower }}">{{ leave.status }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No leave applications yet</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

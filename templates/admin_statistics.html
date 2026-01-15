@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Admin Statistics</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Student Leave Statistics</h2>
+            <div class="nav-buttons">
+                <a href="/admin_dashboard" class="btn">Back to Dashboard</a>
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>
+        </div>
+        
+        <div class="dashboard-content">
+            <!-- Date Filter Form -->
+            <div class="filter-section">
+                <h3>Filter by Date Range</h3>
+                <form method="get" action="/admin_statistics" class="filter-form">
+                    <div class="filter-group">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" name="start_date" id="start_date" value="{{ filter_start_date or '' }}">
+                    </div>
+                    <div class="filter-group">
+                        <label for="end_date">End Date:</label>
+                        <input type="date" name="end_date" id="end_date" value="{{ filter_end_date or '' }}">
+                    </div>
+                    <button type="submit" class="btn">Apply Filter</button>
+                    <a href="/admin_statistics" class="btn-reset">Clear Filter</a>
+                </form>
+                {% if filter_start_date or filter_end_date %}
+                    <p class="filter-info">Showing results filtered by date{% if filter_start_date %} from {{ filter_start_date }}{% endif %}{% if filter_end_date %} to {{ filter_end_date }}{% endif %}</p>
+                {% endif %}
+            </div>
+            
+            <!-- Summary Statistics -->
+            <div class="stats-summary">
+                <div class="stat-card">
+                    <h3>Total Students</h3>
+                    <p class="stat-number">{{ total_students }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Leave Applications</h3>
+                    <p class="stat-number">{{ total_leaves }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Approved Leaves</h3>
+                    <p class="stat-number">{{ approved_leaves }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Leaves</h3>
+                    <p class="stat-number">{{ pending_leaves }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Rejected Leaves</h3>
+                    <p class="stat-number">{{ rejected_leaves }}</p>
+                </div>
+            </div>
+
+            <!-- Student Leave Details -->
+            <h3>Student Leave Details</h3>
+            <table class="leave-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Username</th>
+                        <th>Total Applications</th>
+                        <th>Approved</th>
+                        <th>Pending</th>
+                        <th>Rejected</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if student_stats %}
+                        {% for stat in student_stats %}
+                        <tr>
+                            <td>{{ stat.student_id }}</td>
+                            <td>{{ stat.username }}</td>
+                            <td>{{ stat.total }}</td>
+                            <td><span class="status approved">{{ stat.approved }}</span></td>
+                            <td><span class="status pending">{{ stat.pending }}</span></td>
+                            <td><span class="status rejected">{{ stat.rejected }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6">No student data available</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <!-- Date-wise Leave Data -->
+            <h3>Date-wise Leave Applications</h3>
+            <table class="leave-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Total Applications</th>
+                        <th>Approved</th>
+                        <th>Pending</th>
+                        <th>Rejected</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if date_wise_stats %}
+                        {% for stat in date_wise_stats %}
+                        <tr>
+                            <td>{{ stat.date }}</td>
+                            <td>{{ stat.total }}</td>
+                            <td><span class="status approved">{{ stat.approved }}</span></td>
+                            <td><span class="status pending">{{ stat.pending }}</span></td>
+                            <td><span class="status rejected">{{ stat.rejected }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No leave data available</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <!-- Student Info List -->
+            <h3>All Registered Students</h3>
+            <table class="leave-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Username</th>
+                        <th>Total Leaves Applied</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if students %}
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ student.id }}</td>
+                            <td>{{ student.username }}</td>
+                            <td>{{ student.leave_count }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="3">No students registered</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

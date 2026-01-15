@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Student SH Hostel Leave Application</title>
+</head>
+<body>
+    <div class="page-header">
+        <div class="header-content">
+            <h1>Student SH Hostel Leave Application System</h1>
+            <p class="header-subtitle text-info">Manage Your Leave Applications</p>
+        </div>
+    </div>
+    
+    <div class="container login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Student Login</h2>
+            </div>
+            {% if error %}
+                <div class="error-message">
+                    <span class="error-icon">⚠</span>
+                    {{ error }}
+                </div>
+            {% endif %}
+            <form action="/student_login" method="POST" class="login-form">
+                <div class="form-group">
+                    <input type="text" name="register_number" placeholder="Username" required>
+                    <span class="form-icon">👤</span>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Password" required>
+                    <span class="form-icon">🔐</span>
+                </div>
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+            <div class="login-footer">
+                <p>Don't have an account? <a href="/register" class="link-primary">Register here</a></p>
+                <p>Are you an admin? <a href="/admin_login" class="link-admin">Admin Login</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
